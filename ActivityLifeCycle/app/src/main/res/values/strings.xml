@@ -5,4 +5,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_target">TargetActivity</string>
     <string name="title_activity_orientation">OrientationActivity</string>
+    <string name="portrait">portrait</string>
+    <string name="landscape">landscape</string>
 </resources>
