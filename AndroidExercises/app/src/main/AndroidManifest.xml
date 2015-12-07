@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+                android:name=".SmartImageView"
+                android:label="@string/title_activity_smart_image_view">
+        </activity>
     </application>
 
 </manifest>
