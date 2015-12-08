@@ -4,4 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_smart_image_view">SmartImageView</string>
+    <string name="title_activity_touch_event">TouchEventActivity</string>
+    <string name="blue">#0000ff</string>
 </resources>
