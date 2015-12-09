@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 /**
  * Created by ericson on 2015/12/8 0008.
@@ -19,6 +22,7 @@ public class SlideWindowActivity extends Activity implements View.OnTouchListene
 
     LinearLayout view;
     ViewGroup root;
+    TextView text;
     float lastX;
     float lastY;
 
@@ -51,19 +55,32 @@ public class SlideWindowActivity extends Activity implements View.OnTouchListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.slide_main);
-        root = (ViewGroup) findViewById(R.id.relative);
-        int width = root.getWidth();
-        int height = root.getHeight();
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        root = (RelativeLayout)findViewById(R.id.relative);
+//        RelativeLayout.LayoutParams rootparam = new RelativeLayout.LayoutParams(width, height);
+        root.setBackgroundColor(Color.BLUE);
+//        root.setLayoutParams(rootparam);
+
+        Log.i(TAG, "width:" + width + ",height:" + height);
         view = new LinearLayout(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
-        layoutParams.leftMargin = 50;
-        layoutParams.topMargin = 50;
-        layoutParams.bottomMargin = 50;
-        layoutParams.rightMargin = 50;
-        view.setLayoutParams(layoutParams);
+//        LinearLayout.LayoutParams linearparam = new LinearLayout.LayoutParams(width / 2, height / 2);
         view.setBackgroundColor(Color.BLACK);
+//        view.setLayoutParams(linearparam);
+        RelativeLayout.LayoutParams relativeparam = new RelativeLayout.LayoutParams(width/2, height/2);
+//        relativeparam.leftMargin = 100;
+//        relativeparam.rightMargin = 100;
+//        relativeparam.topMargin = 100;
+//        relativeparam.bottomMargin = 100;
+        relativeparam.addRule(RelativeLayout.CENTER_IN_PARENT);
+        view.setEnabled(true);
         view.setOnTouchListener(this);
+        view.setLayoutParams(relativeparam);
         root.addView(view);
+//        root.addView(view, relativeparam);
+        Log.i(TAG, "" + root.getChildCount());
+//        setContentView(root);
     }
 
     /**
@@ -95,6 +112,7 @@ public class SlideWindowActivity extends Activity implements View.OnTouchListene
                 break;
             case MotionEvent.ACTION_MOVE:
                 Log.i(TAG, "action_move");
+
                 break;
         }
         root.invalidate();

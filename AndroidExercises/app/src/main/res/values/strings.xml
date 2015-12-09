@@ -6,4 +6,5 @@
     <string name="title_activity_smart_image_view">SmartImageView</string>
     <string name="title_activity_touch_event">TouchEventActivity</string>
     <string name="blue">#0000ff</string>
+    <string name="title_activity_object_anim">ObjectAnimActivity</string>
 </resources>
