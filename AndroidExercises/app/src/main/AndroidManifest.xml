@@ -60,7 +60,17 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <meta-data android:name="APP_ID" android:value="SimpleApp"/>
+            <meta-data android:name="APP_PID" android:value="WAPS"/>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.internet"/>
+    <uses-permission android:name="android.permission.access_network_state"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+
 
 </manifest>
