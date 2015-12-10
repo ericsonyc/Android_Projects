@@ -71,7 +71,6 @@ public class OrientationActivity extends Activity {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
         Log.i(TAG, "onConfigurationChanged called");
         switch (newConfig.orientation) {
             case Configuration.ORIENTATION_PORTRAIT:
@@ -81,6 +80,7 @@ public class OrientationActivity extends Activity {
                 setContentView(R.layout.orientation_landscape);
                 break;
         }
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
