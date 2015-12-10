@@ -6,10 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.GridLayout;
+import android.widget.*;
 import cn.waps.AppConnect;
 
 /**
@@ -50,6 +47,8 @@ public class LayoutAnimaActivity extends Activity implements
         //默认动画全部开启
         mTransition = new LayoutTransition();
         mGridLayout.setLayoutTransition(mTransition);
+        LinearLayout layout = (LinearLayout) this.findViewById(R.id.id_linearlayout);
+        AppConnect.getInstance(this).showBannerAd(this, layout);
     }
 
     /**
