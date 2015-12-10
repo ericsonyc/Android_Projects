@@ -60,8 +60,6 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <meta-data android:name="APP_ID" android:value="03353940b9389357ffb8c0df27a07d8b"/>
-            <meta-data android:name="APP_PID" android:value="default"/>
         </activity>
     </application>
 
