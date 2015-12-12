@@ -16,7 +16,7 @@ import android.view.View;
  */
 public class CompassView extends View {
 
-    private static String TAG = "Compass";
+    private static String TAG = "UseCompassView";
 
     private Paint circlePaint, tickPaint;
     private TextPaint textPaint;
@@ -27,11 +27,7 @@ public class CompassView extends View {
 
     public CompassView(Context context) {
         super(context);
-        Activity main = (Activity) context;
-        DisplayMetrics dm = new DisplayMetrics();
-        main.getWindowManager().getDefaultDisplay().getMetrics(dm);
-        Log.i(TAG, "width:" + dm.widthPixels);
-        Log.i(TAG, "height:" + dm.heightPixels);
+        Log.i(TAG,"Constructor");
         initPaint(context);
     }
 
@@ -55,6 +51,7 @@ public class CompassView extends View {
         textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setColor(Color.GREEN);
         textPaint.setTextSize(20);
+        Log.i(TAG,"init paints");
     }
 
     @Override
@@ -64,12 +61,14 @@ public class CompassView extends View {
         compassRadius = Math.min(w, h) * 0.75f / 2;
         tickLength = (1 / 8f) * compassRadius;
         textHeight = textPaint.descent() - textPaint.ascent();
+        Log.i(TAG,"onSizeChanged");
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
 //        canvas.drawColor(Color.CYAN);
-        canvas.drawCircle(compassRadius, compassRadius, compassRadius, circlePaint);
+        Log.i(TAG,"onDraw");
+        canvas.drawCircle(this.vWidth/2, this.vHeight/2, compassRadius, circlePaint);
         int degress;
         float textWidth;
         for (int i = 0; i < 24; i++) {
