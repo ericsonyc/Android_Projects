@@ -83,7 +83,7 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
     @Override
     public void onClick(View v) {
         if (v == backBtn) {
-            backToMainActivity();
+            getAllRecords();
         } else if (v == recordBtn) {
             recordingClick();
         } else if (v == stopBtn) {
@@ -130,7 +130,7 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
         super.onStop();
     }
 
-    private void backToMainActivity() {
+    private void getAllRecords() {
         getAllRecordFiles();
     }
 

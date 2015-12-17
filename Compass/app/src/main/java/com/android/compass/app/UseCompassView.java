@@ -2,7 +2,6 @@ package com.android.compass.app;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
@@ -32,7 +31,8 @@ public class UseCompassView extends Activity {
             }
         });
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        layoutParams.leftMargin = 30;
         CompassView compass = new CompassView(this);
         compass.setLayoutParams(layoutParams);
         compassView.addView(compass);
