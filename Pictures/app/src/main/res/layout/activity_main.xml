@@ -16,8 +16,13 @@
             android:id="@+id/rotate"
             android:text="Rotate"
             android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@id/camera"
-            android:layout_marginLeft="20dp"/>
+            android:layout_toRightOf="@id/camera"/>
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/scale"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/rotate"
+            android:text="Scale"/>
 
     <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,18 +35,27 @@
             android:id="@+id/delete"
             android:text="Delete"
             android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@id/scan"
-            android:layout_marginRight="20dp"/>
+            android:layout_toLeftOf="@id/scan"/>
+
+    <EditText android:layout_width="fill_parent" android:layout_height="40dp"
+              android:id="@+id/edit"
+              android:layout_above="@id/camera"
+              android:hint="enter number to rotate or scale"
+              android:numeric="decimal"/>
 
     <ImageView android:layout_width="fill_parent"
                android:layout_height="match_parent"
                android:layout_centerHorizontal="true"
-               android:layout_above="@id/camera"
-               android:id="@+id/imageview"/>
+               android:layout_above="@id/edit"
+               android:id="@+id/imageview"
+               android:scaleType="center"
+               android:layout_marginBottom="5dp"/>
     <ListView android:layout_width="fill_parent"
               android:layout_height="match_parent"
               android:id="@+id/listview"
-              android:layout_above="@id/camera"
-              android:visibility="gone"></ListView>
+              android:layout_above="@id/edit"
+              android:visibility="gone"
+              android:layout_marginBottom="5dp"
+              android:background="#00ffffff"></ListView>
 
 </RelativeLayout>

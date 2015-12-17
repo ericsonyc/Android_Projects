@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
+import android.graphics.*;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +22,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     private Button rotateBtn;
     private Button deleteBtn;
     private Button scanBtn;
+    private Button scaleBtn;
+    private EditText editText;
     private ListView listview;
     private ImageView imageView;
 
@@ -45,11 +45,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        relative=(RelativeLayout)findViewById(R.id.relative);
+        relative = (RelativeLayout) findViewById(R.id.relative);
         cameraBtn = (Button) findViewById(R.id.camera);
         rotateBtn = (Button) findViewById(R.id.rotate);
         deleteBtn = (Button) findViewById(R.id.delete);
         scanBtn = (Button) findViewById(R.id.scan);
+        scaleBtn = (Button) findViewById(R.id.scale);
+        editText = (EditText) findViewById(R.id.edit);
         listview = (ListView) findViewById(R.id.listview);
         imageView = (ImageView) findViewById(R.id.imageview);
 
@@ -57,6 +59,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         rotateBtn.setOnClickListener(this);
         deleteBtn.setOnClickListener(this);
         scanBtn.setOnClickListener(this);
+        scaleBtn.setOnClickListener(this);
 
         existCamera = checkCamera(this);
 
@@ -89,6 +92,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             deleteClick();
         } else if (v == scanBtn) {
             scanClick();
+        } else if (v == scaleBtn) {
+            scaleClick();
         }
     }
 
@@ -102,6 +107,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             imageView.setVisibility(View.VISIBLE);
             rotateBtn.setEnabled(true);
             deleteBtn.setEnabled(true);
+            scaleBtn.setEnabled(true);
             hasImage = true;
         }
     }
@@ -116,6 +122,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     private void cameraClick() {
         rotateBtn.setEnabled(true);
         deleteBtn.setEnabled(true);
+        scaleBtn.setEnabled(true);
         relative.removeView(textView);
         imageFile = new File(imageDir, prefix + suffix + ".jpg");
         suffix++;
@@ -186,13 +193,14 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         listview.setVisibility(View.VISIBLE);
         rotateBtn.setEnabled(false);
         deleteBtn.setEnabled(false);
-        if(adapter.isEmpty()){
-            textView=new TextView(this);
+        scaleBtn.setEnabled(false);
+        if (adapter.isEmpty()) {
+            textView = new TextView(this);
             textView.setText("has no image~~");
-            RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(relative.getWidth(),relative.getHeight());
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(relative.getWidth(), relative.getHeight());
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-            relative.addView(textView,layoutParams);
-        }else{
+            relative.addView(textView, layoutParams);
+        } else {
             relative.removeView(textView);
         }
     }
@@ -209,9 +217,59 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     private void rotateClick() {
         if (imageFile != null && currentBitmap != null) {
             Matrix m = new Matrix();
-            m.setRotate(90);
-            currentBitmap = Bitmap.createBitmap(currentBitmap, 0, 0, currentBitmap.getWidth(), currentBitmap.getHeight(), m, true);
-            imageView.setImageBitmap(currentBitmap);
+            String text = editText.getText().toString().trim();
+            try {
+                float value = Float.valueOf(text);
+                m.setRotate(value);
+                imageView.setImageBitmap(null);
+                currentBitmap = Bitmap.createBitmap(currentBitmap, 0, 0, currentBitmap.getWidth(), currentBitmap.getHeight(), m, true);
+                currentBitmap = currentBitmap.copy(Bitmap.Config.ARGB_8888, true);
+                imageView.setImageBitmap(currentBitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void returnBmp() {
+
+        Canvas c = new Canvas(currentBitmap);
+        Paint p = new Paint();
+        p.setAlpha(0);
+        //p.setXfermode(new AvoidXfermode(removeColor, 0, AvoidXfermode.Mode.TARGET));
+        c.drawPaint(p);
+    }
+
+    public Bitmap cutBitmap(Bitmap mBitmap, Bitmap.Config config) {
+        imageView.measure(0, 0);
+        int width = imageView.getWidth();
+        int height = imageView.getHeight();
+
+        Bitmap croppedImage = Bitmap.createBitmap(width, height, config);
+        Rect r = new Rect(imageView.getLeft(), imageView.getTop(), imageView.getRight(), imageView.getBottom());
+        Canvas canvas = new Canvas(croppedImage);
+        Rect dr = new Rect(0, 0, width, height);
+        canvas.drawBitmap(mBitmap, r, dr, null);
+        return croppedImage;
+    }
+
+
+    private void scaleClick() {
+        if (imageFile != null && currentBitmap != null) {
+            Matrix m = new Matrix();
+            String text = editText.getText().toString().trim();
+            try {
+                float value = Float.valueOf(text);
+                if (value > 5) {
+                    Toast.makeText(this, "The picture can not be scale large,please enter a 0.x", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                m.postScale(value, value);
+                currentBitmap = Bitmap.createBitmap(currentBitmap, 0, 0, currentBitmap.getWidth(), currentBitmap.getHeight(), m, true);
+                imageView.setImageBitmap(currentBitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
