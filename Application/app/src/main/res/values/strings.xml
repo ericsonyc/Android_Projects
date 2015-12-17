@@ -3,5 +3,4 @@
     <string name="hello_world">Hello world!</string>
     <string name="btn1">Recording</string>
     <string name="btn2">Load Picture</string>
-    <string name="back">返回</string>
 </resources>

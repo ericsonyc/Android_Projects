@@ -1,7 +1,9 @@
 package com.android.application.app;
 
 import android.app.Activity;
+import android.app.LauncherActivity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,19 +33,21 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
     private ArrayAdapter<String> adapter;//the adapter of listView;
     private boolean existSdCard;//judge if the phone exists the sdcard
     private boolean isStopRcd;//judge if we stop the recording
+    private boolean isPlayed;
     private String prefixFile = "record_";//prefix of record file
     private int suffix = 1;//suffix of filename
     private File recordFile;//the current record file
     private File recordDir;//record directory
     private File playFile;//the current play file
     private MediaRecorder mediaRecorder;//MediaRecorder
+    private MediaPlayer mediaPlayer;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.record);
-        backBtn = (Button) findViewById(R.id.back);
+        backBtn = (Button) findViewById(R.id.loadall);
         backBtn.setOnClickListener(this);
 
         recordBtn = (Button) findViewById(R.id.record);
@@ -73,6 +77,7 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
 
         adapter = new ArrayAdapter<String>(this, R.layout.record_list_item, recordFiles);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
     }
 
     @Override
@@ -92,6 +97,12 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (mediaPlayer != null && isPlayed) {
+            isPlayed = false;
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
         playBtn.setEnabled(true);
         deleteBtn.setEnabled(true);
         playFile = new File(recordDir.getAbsoluteFile() + File.separator + adapter.getItem(position));
@@ -108,13 +119,19 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
         if (mediaRecorder != null) {
             mediaRecorder = null;
         }
+        if (mediaPlayer != null && isPlayed) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        if (mediaPlayer != null) {
+            mediaPlayer = null;
+        }
         super.onStop();
     }
 
     private void backToMainActivity() {
-        Intent intent = new Intent();
-        intent.setClass(RecordActivity.this, MainActivity.class);
-        startActivity(intent);
+        getAllRecordFiles();
     }
 
     private void recordingClick() {
@@ -122,6 +139,12 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
             if (!existSdCard) {
                 Toast.makeText(RecordActivity.this, "Please insert the SD Card!", Toast.LENGTH_LONG).show();
                 return;
+            }
+            if (mediaPlayer != null && isPlayed) {
+                isPlayed = false;
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
             }
             recordFile = File.createTempFile(prefixFile + suffix, ".amr", recordDir);
             suffix++;
@@ -170,11 +193,39 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
     }
 
     private void openFile(File file) {
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setAction(Intent.ACTION_VIEW);
-        String type = ".amr";
-        intent.setDataAndType(Uri.fromFile(file), type);
-        startActivity(intent);
+        isPlayed = true;
+        mediaPlayer = new MediaPlayer();
+        textView.setText("Begin play...");
+        try {
+            mediaPlayer.setDataSource(RecordActivity.this, Uri.fromFile(file));
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //call the system player program
+//        Intent intent = new Intent();
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.setAction(Intent.ACTION_VIEW);
+//        String type = ".amr";
+//        intent.setDataAndType(Uri.fromFile(file), type);
+//        startActivity(intent);
+    }
+
+    private void getAllRecordFiles() {//open all the record files in sdcard
+        if (existSdCard) {
+            File[] files = recordDir.listFiles();
+            if (files != null) {
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].getName().indexOf(".") >= 0) {
+                        String temp = files[i].getName().substring(files[i].getName().indexOf("."));
+                        if (temp.toLowerCase().equals(".amr") && !recordFiles.contains(files[i].getName()))
+                            recordFiles.add(files[i].getName());
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 }
