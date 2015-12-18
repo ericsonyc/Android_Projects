@@ -37,11 +37,17 @@
             android:layout_alignParentBottom="true"
             android:layout_toLeftOf="@id/scan"/>
 
-    <EditText android:layout_width="fill_parent" android:layout_height="40dp"
+    <EditText android:layout_width="100dp" android:layout_height="40dp"
               android:id="@+id/edit"
               android:layout_above="@id/camera"
-              android:hint="enter number to rotate or scale"
+              android:hint="x axis value"
               android:numeric="decimal"/>
+    <EditText android:layout_width="100dp" android:layout_height="40dp"
+              android:id="@+id/edit2"
+              android:layout_toRightOf="@id/edit"
+              android:hint="y axis value"
+              android:numeric="decimal"
+              android:layout_above="@id/camera"/>
 
     <ImageView android:layout_width="fill_parent"
                android:layout_height="match_parent"

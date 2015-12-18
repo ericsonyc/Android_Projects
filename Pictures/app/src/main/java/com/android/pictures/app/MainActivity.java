@@ -24,6 +24,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     private Button scanBtn;
     private Button scaleBtn;
     private EditText editText;
+    private EditText editText2;
     private ListView listview;
     private ImageView imageView;
 
@@ -52,6 +53,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         scanBtn = (Button) findViewById(R.id.scan);
         scaleBtn = (Button) findViewById(R.id.scale);
         editText = (EditText) findViewById(R.id.edit);
+        editText2 = (EditText) findViewById(R.id.edit2);
         listview = (ListView) findViewById(R.id.listview);
         imageView = (ImageView) findViewById(R.id.imageview);
 
@@ -218,15 +220,29 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         if (imageFile != null && currentBitmap != null) {
             Matrix m = new Matrix();
             String text = editText.getText().toString().trim();
+            String text1 = editText2.getText().toString().trim();
             try {
-                float value = Float.valueOf(text);
-                m.setRotate(value);
-                imageView.setImageBitmap(null);
+                float value1 = 0, value2 = 0;
+                if (text.isEmpty() && text1.isEmpty())
+                    return;
+                if (text.isEmpty()) {
+                    value2 = Float.valueOf(text1);
+                    value1 = 0;
+                } else if (text1.isEmpty()) {
+                    value1 = Float.valueOf(text);
+                    value2 = 0;
+                }else{
+                	value1=Float.valueOf(text);
+                	value2=Float.valueOf(text1);
+                }
+                float degree=(value1+value2);
+                m.setRotate(degree);
                 currentBitmap = Bitmap.createBitmap(currentBitmap, 0, 0, currentBitmap.getWidth(), currentBitmap.getHeight(), m, true);
                 currentBitmap = currentBitmap.copy(Bitmap.Config.ARGB_8888, true);
                 imageView.setImageBitmap(currentBitmap);
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(this,"please enter number",Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -258,13 +274,26 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         if (imageFile != null && currentBitmap != null) {
             Matrix m = new Matrix();
             String text = editText.getText().toString().trim();
+            String text1 = editText2.getText().toString().trim();
             try {
-                float value = Float.valueOf(text);
-                if (value > 5) {
+            	float value1=0,value2=0;
+            	if (text.isEmpty() && text1.isEmpty())
+                    return;
+                if (text.isEmpty()) {
+                    value2 = Float.valueOf(text1);
+                    value1 = 0;
+                } else if (text1.isEmpty()) {
+                    value1 = Float.valueOf(text);
+                    value2 = 0;
+                }else{
+                	value1=Float.valueOf(text);
+                	value2=Float.valueOf(text1);
+                }
+                if (value1+value2 > 5) {
                     Toast.makeText(this, "The picture can not be scale large,please enter a 0.x", Toast.LENGTH_LONG).show();
                     return;
                 }
-                m.postScale(value, value);
+                m.postScale(value1, value2);
                 currentBitmap = Bitmap.createBitmap(currentBitmap, 0, 0, currentBitmap.getWidth(), currentBitmap.getHeight(), m, true);
                 imageView.setImageBitmap(currentBitmap);
             } catch (Exception e) {

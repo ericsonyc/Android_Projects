@@ -24,6 +24,7 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
     private Button recordBtn;
     private Button stopBtn;
     private Button playBtn;
+    private Button cycleBtn;
     private Button deleteBtn;
 
     private TextView textView;
@@ -34,6 +35,7 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
     private boolean existSdCard;//judge if the phone exists the sdcard
     private boolean isStopRcd;//judge if we stop the recording
     private boolean isPlayed;
+    private boolean isPause;
     private String prefixFile = "record_";//prefix of record file
     private int suffix = 1;//suffix of filename
     private File recordFile;//the current record file
@@ -53,10 +55,12 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
         recordBtn = (Button) findViewById(R.id.record);
         stopBtn = (Button) findViewById(R.id.stop);
         playBtn = (Button) findViewById(R.id.play);
+        cycleBtn = (Button) findViewById(R.id.pause);
         deleteBtn = (Button) findViewById(R.id.delete);
         recordBtn.setOnClickListener(this);
         stopBtn.setOnClickListener(this);
         playBtn.setOnClickListener(this);
+        cycleBtn.setOnClickListener(this);
         deleteBtn.setOnClickListener(this);
 
         textView = (TextView) findViewById(R.id.textview);
@@ -65,6 +69,7 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
         //init status
         stopBtn.setEnabled(false);
         playBtn.setEnabled(false);
+        cycleBtn.setEnabled(false);
         deleteBtn.setEnabled(false);
 
         recordFiles = new ArrayList<String>();
@@ -80,30 +85,55 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
         listView.setOnItemClickListener(this);
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v == backBtn) {
-            getAllRecords();
-        } else if (v == recordBtn) {
-            recordingClick();
-        } else if (v == stopBtn) {
-            stopClick();
-        } else if (v == playBtn) {
-            playClick();
-        } else if (v == deleteBtn) {
-            deleteClick();
-        }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (mediaPlayer != null && isPlayed) {
+    private void shutdowncycle() {
+        if (isPlayed && mediaPlayer != null) {
             isPlayed = false;
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
         }
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == backBtn) {
+            stopBtn.setEnabled(false);
+            playBtn.setEnabled(false);
+            cycleBtn.setEnabled(false);
+            deleteBtn.setEnabled(false);
+            getAllRecords();
+            isPause = false;
+        } else if (v == recordBtn) {
+            isPlayed = false;
+            recordingClick();
+            isPause = false;
+        } else if (v == stopBtn) {
+            isPlayed = false;
+            stopClick();
+            isPause = false;
+        } else if (v == playBtn) {
+            playClick();
+            isPause = false;
+        } else if (v == deleteBtn) {
+            isPlayed = false;
+            deleteClick();
+            isPause = false;
+        } else if (v == cycleBtn) {
+            cycleClick();
+            isPause = true;
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        shutdowncycle();
         playBtn.setEnabled(true);
+        cycleBtn.setEnabled(true);
         deleteBtn.setEnabled(true);
         playFile = new File(recordDir.getAbsoluteFile() + File.separator + adapter.getItem(position));
         textView.setText("You choose the file: " + adapter.getItem(position));
@@ -117,16 +147,11 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
             mediaRecorder = null;
         }
         if (mediaRecorder != null) {
+            mediaRecorder.stop();
+            mediaRecorder.release();
             mediaRecorder = null;
         }
-        if (mediaPlayer != null && isPlayed) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-        if (mediaPlayer != null) {
-            mediaPlayer = null;
-        }
+        shutdowncycle();
         super.onStop();
     }
 
@@ -140,12 +165,7 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
                 Toast.makeText(RecordActivity.this, "Please insert the SD Card!", Toast.LENGTH_LONG).show();
                 return;
             }
-            if (mediaPlayer != null && isPlayed) {
-                isPlayed = false;
-                mediaPlayer.stop();
-                mediaPlayer.release();
-                mediaPlayer = null;
-            }
+            shutdowncycle();
             recordFile = File.createTempFile(prefixFile + suffix, ".amr", recordDir);
             suffix++;
             mediaRecorder = new MediaRecorder();
@@ -158,6 +178,7 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
             textView.setText("Start Recording...");
             stopBtn.setEnabled(true);
             playBtn.setEnabled(false);
+            cycleBtn.setEnabled(false);
             deleteBtn.setEnabled(false);
             isStopRcd = false;
         } catch (Exception e) {
@@ -192,14 +213,22 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
         }
     }
 
+    int position;
+
     private void openFile(File file) {
         isPlayed = true;
-        mediaPlayer = new MediaPlayer();
+        if (mediaPlayer == null)
+            mediaPlayer = new MediaPlayer();
         textView.setText("Begin play...");
         try {
-            mediaPlayer.setDataSource(RecordActivity.this, Uri.fromFile(file));
-            mediaPlayer.prepare();
-            mediaPlayer.start();
+            if (isPause) {
+//                mediaPlayer.seekTo(position);
+                mediaPlayer.start();
+            } else {
+                mediaPlayer.setDataSource(RecordActivity.this, Uri.fromFile(file));
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -227,5 +256,34 @@ public class RecordActivity extends Activity implements View.OnClickListener, Ad
                 adapter.notifyDataSetChanged();
             }
         }
+    }
+
+    private void cycleClick() {
+        if (playFile != null && playFile.exists()) {
+            mediaPlayer.pause();
+            position = mediaPlayer.getCurrentPosition();
+        }
+    }
+
+    private void openFile2(File file) {
+        isPlayed = true;
+        mediaPlayer = new MediaPlayer();
+        textView.setText("Begin play...");
+        try {
+            mediaPlayer.setDataSource(RecordActivity.this, Uri.fromFile(file));
+            mediaPlayer.prepare();
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //call the system player program
+//        Intent intent = new Intent();
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.setAction(Intent.ACTION_VIEW);
+//        String type = ".amr";
+//        intent.setDataAndType(Uri.fromFile(file), type);
+//        startActivity(intent);
     }
 }

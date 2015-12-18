@@ -20,23 +20,29 @@
             android:id="@+id/stop"
             android:layout_alignParentBottom="true"
             android:text="Stop"
-            android:layout_toRightOf="@id/record"
-            android:layout_marginLeft="30dp"/>
-
-    <Button android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/delete"
-            android:layout_alignParentBottom="true"
-            android:text="Delete"
-            android:layout_alignParentRight="true"/>
+            android:layout_toRightOf="@id/record"/>
 
     <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/play"
             android:text="Play"
             android:layout_alignParentBottom="true"
-            android:layout_toLeftOf="@id/delete"
-            android:layout_marginRight="30dp"/>
+            android:layout_toRightOf="@id/stop"/>
+
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pause"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/play"
+            android:text="Pause"/>
+
+    <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/delete"
+            android:layout_alignParentBottom="true"
+            android:text="Delete"
+            android:layout_toRightOf="@id/pause"/>
+
 
     <TextView android:layout_width="fill_parent"
               android:layout_height="50dp"
