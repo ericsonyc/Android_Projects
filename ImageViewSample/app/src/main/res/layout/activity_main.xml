@@ -10,4 +10,9 @@
             android:background="@mipmap/finddragon"
             android:scaleType="center"></com.android.imageviewsample.app.MatrixImageView>
 
+    <ImageView android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:background="@mipmap/finddragon"
+               android:scaleType="center"/>
+
 </RelativeLayout>
