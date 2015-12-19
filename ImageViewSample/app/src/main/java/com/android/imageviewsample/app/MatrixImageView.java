@@ -31,6 +31,17 @@ public class MatrixImageView extends ImageView {
      */
     private float mImageHeight;
 
+    public MatrixImageView(Context context) {
+        super(context);
+        MatrixTouchListener mListener = new MatrixTouchListener();
+        setOnTouchListener(mListener);
+        mGestureDetector = new GestureDetector(getContext(), new GestureListener(mListener));
+        //背景设置为balck
+        setBackgroundColor(Color.BLACK);
+        //将缩放类型设置为FIT_CENTER，表示把图片按比例扩大/缩小到View的宽度，居中显示
+        setScaleType(ScaleType.FIT_CENTER);
+    }
+
     public MatrixImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         MatrixTouchListener mListener = new MatrixTouchListener();

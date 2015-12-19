@@ -4,4 +4,10 @@
                 android:layout_height="match_parent"
                 tools:context="${relativePackage}.${activityClass}">
 
+    <com.android.imageviewsample.app.MatrixImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/hello"
+            android:scaleType="center"></com.android.imageviewsample.app.MatrixImageView>
+
 </RelativeLayout>
