@@ -4,15 +4,29 @@
                 android:layout_height="match_parent"
                 tools:context="${relativePackage}.${activityClass}">
 
-    <com.android.imageviewsample.app.MatrixImageView
+    <com.android.imageviewsample.app.MyButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="button"
+            android:id="@+id/button"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"></com.android.imageviewsample.app.MyButton>
+
+    <!--<com.android.imageviewsample.app.MatrixImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@mipmap/finddragon"
-            android:scaleType="center"></com.android.imageviewsample.app.MatrixImageView>
+            android:scaleType="center"
+            android:id="@+id/imageView"
+            android:layout_above="@id/button"
+            android:visibility="gone"></com.android.imageviewsample.app.MatrixImageView>-->
 
-    <ImageView android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:background="@mipmap/finddragon"
-               android:scaleType="center"/>
+    <!--<com.android.imageviewsample.app.TouchImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/finddragon"
+            android:scaleType="matrix"
+            android:id="@+id/touch"
+            android:layout_above="@id/button"/>-->
 
 </RelativeLayout>
