@@ -4,11 +4,11 @@
                 android:layout_height="match_parent"
                 tools:context="${relativePackage}.${activityClass}">
 
-    <TextView android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:layout_margin="50dp"
-              android:background="#5c77ff"
-              android:id="@+id/tv"
-              android:text="hello_world"/>
+    <com.android.imageviewsample.app.MyButton android:layout_width="fill_parent"
+                                              android:layout_height="fill_parent"
+                                              android:layout_margin="50dp"
+                                              android:background="#5c77ff"
+                                              android:id="@+id/tv"
+                                              android:text="hello_world"/>
 
 </RelativeLayout>

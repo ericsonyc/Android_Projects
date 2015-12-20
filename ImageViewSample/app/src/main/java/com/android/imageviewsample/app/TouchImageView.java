@@ -17,6 +17,8 @@ import android.widget.ImageView;
 
 public class TouchImageView extends ImageView {
 
+    private static final String TAG = "TouchImageView";
+
     Matrix matrix;
 
     // We can be in one of these 3 states
@@ -28,13 +30,13 @@ public class TouchImageView extends ImageView {
     // Remember some things for zooming
     PointF last = new PointF();
     PointF start = new PointF();
-    float minScale = 1f;
+    float minScale = 0.3f;
     float maxScale = 3f;
     float[] m;
 
 
     int viewWidth, viewHeight;
-    static final int CLICK = 3;
+    static final int CLICK = 70;
     float saveScale = 1f;
     protected float origWidth, origHeight;
     int oldMeasuredWidth, oldMeasuredHeight;
@@ -46,16 +48,19 @@ public class TouchImageView extends ImageView {
 
     public TouchImageView(Context context) {
         super(context);
+        Log.i(TAG, "Constructor");
         sharedConstructing(context);
     }
 
     public TouchImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Log.i(TAG, "Constructor2");
         sharedConstructing(context);
     }
 
     private void sharedConstructing(Context context) {
         super.setClickable(true);
+        Log.i(TAG, "sharedConstructing");
         this.context = context;
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
         matrix = new Matrix();
@@ -67,17 +72,20 @@ public class TouchImageView extends ImageView {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                Log.i(TAG, "onTouchListener.onTouch");
                 mScaleDetector.onTouchEvent(event);
                 PointF curr = new PointF(event.getX(), event.getY());
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
+                        Log.i(TAG, "Action_down");
                         last.set(curr);
                         start.set(last);
                         mode = DRAG;
                         break;
 
                     case MotionEvent.ACTION_MOVE:
+                        Log.i(TAG, "action_move:mode:" + mode);
                         if (mode == DRAG) {
                             float deltaX = curr.x - last.x;
                             float deltaY = curr.y - last.y;
@@ -90,20 +98,24 @@ public class TouchImageView extends ImageView {
                         break;
 
                     case MotionEvent.ACTION_UP:
+                        Log.i(TAG, "action_up:mode:" + mode);
                         mode = NONE;
                         int xDiff = (int) Math.abs(curr.x - start.x);
                         int yDiff = (int) Math.abs(curr.y - start.y);
+                        Log.i(TAG, "action_up:xDiff:" + xDiff + ",yDiff:" + yDiff);
                         if (xDiff < CLICK && yDiff < CLICK)
                             performClick();
                         break;
 
                     case MotionEvent.ACTION_POINTER_UP:
+                        Log.i(TAG, "action_pointer_up");
                         mode = NONE;
                         break;
                 }
 
                 setImageMatrix(matrix);
                 invalidate();
+                Log.i(TAG, "onTouchListener:invalidate");
                 return true; // indicate event was handled
             }
 
@@ -111,20 +123,24 @@ public class TouchImageView extends ImageView {
     }
 
     public void setMaxZoom(float x) {
+        Log.i(TAG, "setMaxZoom");
         maxScale = x;
     }
 
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScaleBegin(ScaleGestureDetector detector) {
+            Log.i(TAG, "onScaleBegin");
             mode = ZOOM;
             return true;
         }
 
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
+
             float mScaleFactor = detector.getScaleFactor();
             float origScale = saveScale;
+            Log.i(TAG, "onScale:mScaleFactor:" + mScaleFactor + ",origScale:" + origScale);
             saveScale *= mScaleFactor;
             if (saveScale > maxScale) {
                 saveScale = maxScale;

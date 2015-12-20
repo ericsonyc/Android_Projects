@@ -28,16 +28,17 @@ public class GestureActivity extends Activity implements View.OnTouchListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gesture);
 
-        GestureListener listener = new GestureListener();
-        mGestureDetector = new GestureDetector(this, listener);
-        mGestureDetector.setOnDoubleTapListener(listener);
-        TextView tv = (TextView) findViewById(R.id.tv);
-        tv.setOnTouchListener(this);
-        tv.setFocusable(true);
-        tv.setClickable(true);
-        tv.setLongClickable(true);
+//        GestureListener listener = new GestureListener();
+//        mGestureDetector = new GestureDetector(this, listener);
+//        mGestureDetector.setOnDoubleTapListener(listener);
+//        TextView tv = (TextView) findViewById(R.id.tv);
+//        tv.setOnTouchListener(this);
+//        tv.setFocusable(true);
+//        tv.setClickable(true);
+//        tv.setLongClickable(true);
 
     }
+
 
     private class GestureListener implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
