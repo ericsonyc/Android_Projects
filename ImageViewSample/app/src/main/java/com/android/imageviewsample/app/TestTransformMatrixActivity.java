@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 public class TestTransformMatrixActivity extends Activity implements View.OnTouchListener {
 
     private TransformMatrixView view;
+    private static final String TAG = "Transform";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +46,17 @@ public class TestTransformMatrixActivity extends Activity implements View.OnTouc
 
         @Override
         protected void onDraw(Canvas canvas) {
-            canvas.drawBitmap(bitmap, 0, 0, null);
             canvas.drawBitmap(bitmap, matrix, null);
             super.onDraw(canvas);
+        }
+
+        public void setThisMatrix(Matrix matrix) {
+            this.matrix.set(matrix);
+            super.setImageMatrix(matrix);
+        }
+
+        public Matrix getThisMatrix() {
+            return this.matrix;
         }
 
         @Override
@@ -63,18 +73,18 @@ public class TestTransformMatrixActivity extends Activity implements View.OnTouc
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_UP) {
-            Matrix matrix = new Matrix();
-            matrix.postTranslate(view.getImageBitmap().getWidth(), view.getImageBitmap().getHeight());
+            Matrix matrix = view.getThisMatrix();
+//            matrix.postTranslate(view.getImageBitmap().getWidth(), view.getImageBitmap().getHeight());
+//            matrix.setRotate(45f,view.getImageBitmap().getWidth()/2f,view.getImageBitmap().getHeight()/2f);
+//            matrix.postTranslate(view.getImageBitmap().getWidth()*1.5f,0f);
+//            matrix.setRotate(45f);
+//            matrix.setScale(2f,2f);
+
+            matrix.setSkew(0.5f, 0.5f);
+
+            view.setThisMatrix(matrix);
             view.setImageMatrix(matrix);
 
-            float[] matrixValues = new float[9];
-            matrix.getValues(matrixValues);
-            for (int i = 0; i < 3; i++) {
-                String temp = new String();
-                for (int j = 0; j < 3; j++) {
-                    temp += matrixValues[3 * i + j] + "\t";
-                }
-            }
             view.invalidate();
         }
         return true;
