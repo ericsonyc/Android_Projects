@@ -29,4 +29,12 @@
             android:id="@+id/touch"
             android:layout_above="@id/button"/>-->
 
+    <com.android.imageviewsample.app.ScaleImage
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scaleimage"
+            android:layout_above="@id/button"
+            android:visibility="gone"
+            android:src="@mipmap/finddragon"/>
+
 </RelativeLayout>
