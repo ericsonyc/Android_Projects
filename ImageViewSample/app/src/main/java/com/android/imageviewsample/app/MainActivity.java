@@ -60,6 +60,34 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         mImage = (ImageView) findViewById(R.id.image);
         mScaleImage = (ScaleImage) findViewById(R.id.scale_image);
+        mStateText = (TextView) findViewById(R.id.state_text);
+        mNormal = (CheckBox) findViewById(R.id.normal);
+        mNormal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNormal.setChecked(true);
+                mChange.setChecked(false);
+                mStateText.setText(NORMAL);
+                mImage.setVisibility(View.VISIBLE);
+                mScaleImage.setVisibility(View.GONE);
+            }
+        });
+        mChange = (CheckBox) findViewById(R.id.change);
+        mChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNormal.setChecked(false);
+                mChange.setChecked(true);
+                mStateText.setText(CHANGE);
+                mImage.setVisibility(View.GONE);
+                mScaleImage.setVisibility(View.VISIBLE);
+            }
+        });
+        mNormal.setChecked(true);
+        mChange.setChecked(false);
+        mImage.setVisibility(View.VISIBLE);
+        mScaleImage.setVisibility(View.GONE);
+        mStateText.setText(NORMAL);
 
     }
 

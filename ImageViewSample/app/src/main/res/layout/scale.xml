@@ -77,8 +77,8 @@
             <!--覆寫的ImageView，初始狀態為隱藏-->
             <com.android.imageviewsample.app.ScaleImage
                     android:id="@+id/scale_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:src="@mipmap/finddragon"
                     android:visibility="gone"
             />
