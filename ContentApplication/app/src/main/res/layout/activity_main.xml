@@ -5,8 +5,53 @@
                 tools:context="${relativePackage}.${activityClass}">
 
     <TextView
-            android:text="@string/hello_world"
+            android:text="姓名："
+            android:id="@+id/text_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_name"
+            android:layout_toRightOf="@id/text_name"
+    />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_number"
+            android:text="号码："
+            android:layout_below="@id/text_name"
+    />
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_phone"
+            android:layout_toRightOf="@id/text_number"
+            android:layout_below="@id/edit_name"/>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@id/text_number"
+                  android:id="@+id/linear"
+                  android:orientation="horizontal">
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/insert_btn"
+                android:text="插入"
+        />
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:id="@+id/delete_btn"
+                android:text="删除"/>
+
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:id="@+id/query_btn"
+                android:text="查询"/>
+    </LinearLayout>
+
+    <ListView android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/listview"
+              android:layout_below="@id/linear"></ListView>
 
 </RelativeLayout>
