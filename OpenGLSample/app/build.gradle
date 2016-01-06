@@ -13,13 +13,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 17
+    compileSdkVersion 19
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.android.openglandroid.app"
-        minSdkVersion 8
-        targetSdkVersion 17
+        applicationId "com.android.openglsample.app"
+        minSdkVersion 17
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
     }
