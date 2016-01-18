@@ -20,13 +20,15 @@ public class RelativeLayoutActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.relativemain3);
         Log.i(TAG,"setContentView done");
-        final Intent intent=new Intent(RelativeLayoutActivity.this,AdActivity.class);
+//        final Intent intent=new Intent(RelativeLayoutActivity.this,AdDialog.class);
         Log.i(TAG,"intent");
+        final AdDialog dialog=new AdDialog(this);
         relative=(RelativeLayout)findViewById(R.id.RelativeLayout3);
         relative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(intent);
+//                startActivity(intent);
+                dialog.show();
             }
         });
     }
