@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="darkblue">#FF9933CC</color>
+    <color name="reveal_color">#dd2a1d45</color>
+    <color name="bottom_color">#421b19</color>
+    <color name="bottom_bg">#0d450e</color>
 </resources>
