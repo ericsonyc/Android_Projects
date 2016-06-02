@@ -17,6 +17,7 @@ public class ShakeFragment extends Fragment {
 
 
     private QsShakeFab qsShakeFab;
+    private int number = 5;
 
     public ShakeFragment() {
         // Required empty public constructor
@@ -33,18 +34,18 @@ public class ShakeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_shake, container, false);
 
-        qsShakeFab = (QsShakeFab)inflate.findViewById(R.id.shake);
+        qsShakeFab = (QsShakeFab) inflate.findViewById(R.id.shake);
         qsShakeFab.setBackgroundTintColor(Color.parseColor("#039BE5"));
         qsShakeFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                qsShakeFab.start(-1);
+                qsShakeFab.start(number);
             }
         });
         qsShakeFab.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                qsShakeFab.start(-1);
+                qsShakeFab.start(number);
             }
         });
 

@@ -78,7 +78,7 @@ public class QsBarController extends QsBaseController {
         //2
         canvas.drawRect(weight + space, bitmapH - defaultHeight, weight * 2 + space, bitmapH, paint);
         //3
-        canvas.drawRect(weight * 2 + space * 2, bitmapH - defaultHeight, bitmapW, bitmapH, paint);
+//        canvas.drawRect(weight * 2 + space * 2, bitmapH - defaultHeight, bitmapW, bitmapH, paint);
         if (lastH1 != defaultHeight) {
             lastH1 = defaultHeight;
             lastH2 = defaultHeight;

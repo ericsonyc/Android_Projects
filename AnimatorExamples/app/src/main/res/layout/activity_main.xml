@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ericson.animatorexamples.MainActivity">
+
+    <Button
+        android:id="@+id/margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Margin Animator" />
+
+    <Button
+        android:id="@+id/scale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scale Animator"
+        android:layout_toRightOf="@id/margin"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rotate Animator"
+        android:layout_below="@id/margin"
+        android:id="@+id/rotate"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show ListView"
+        android:id="@+id/show"
+        android:layout_toRightOf="@id/rotate"
+        android:layout_below="@id/scale"
+        android:layout_alignParentRight="true"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rotate"
+        android:background="@mipmap/ic_launcher"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="40dp"
+        android:id="@+id/image"/>
+
+
+</RelativeLayout>

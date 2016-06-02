@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ericson.asd_examples.MainActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
+
+    <!--<Button-->
+    <!--android:id="@+id/btn"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:onClick="btnClick"-->
+    <!--android:text="你真的要点我了？"-->
+    <!--app:layout_constraintCenterX_toCenterX="@+id/activity_main"-->
+    <!--app:layout_constraintLeft_toLeftOf="@+id/activity_main"-->
+    <!--app:layout_constraintRight_toRightOf="@+id/activity_main"-->
+    <!--tools:layout_constraintLeft_creator="0"-->
+    <!--tools:layout_constraintRight_creator="0"-->
+    <!--tools:layout_editor_absoluteX="124dp"-->
+    <!--tools:layout_editor_absoluteY="0dp" />-->
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/activity_main">
+
+        <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="imageClick"
+            app:layout_constraintCenterX_toCenterX="@+id/coordinator"></android.support.design.widget.FloatingActionButton>
+    </android.support.design.widget.CoordinatorLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/tb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlways"
+                ></android.support.v7.widget.Toolbar>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.design.widget.TabLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="50dp"
+                    android:text="Loader最帅" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="#FFF34000"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="#FF6452FF"
+        app:tabTextColor="#FF3465F4"></android.support.design.widget.TabLayout>
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:onClick="btnClick"-->
+    <!--android:text="Hello World!"-->
+    <!--app:layout_constraintBottom_toBottomOf="@+id/activity_main"-->
+    <!--app:layout_constraintLeft_toLeftOf="@+id/activity_main"-->
+    <!--app:layout_constraintRight_toRightOf="@+id/activity_main"-->
+    <!--app:layout_constraintTop_toTopOf="@+id/activity_main"-->
+    <!--tools:layout_constraintBottom_creator="0"-->
+    <!--tools:layout_constraintLeft_creator="0"-->
+    <!--tools:layout_constraintRight_creator="0"-->
+    <!--tools:layout_constraintTop_creator="0"-->
+    <!--tools:layout_editor_absoluteX="154dp"-->
+    <!--tools:layout_editor_absoluteY="247dp" />-->
+
+</android.support.constraint.ConstraintLayout>

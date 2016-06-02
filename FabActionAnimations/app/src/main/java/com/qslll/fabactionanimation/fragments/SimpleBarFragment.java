@@ -19,7 +19,7 @@ import com.qslll.library.fabs.simple.QsFabFactory;
  */
 public class SimpleBarFragment extends Fragment {
 
-
+    int number = 5;
 
     public SimpleBarFragment() {
         // Required empty public constructor
@@ -33,12 +33,12 @@ public class SimpleBarFragment extends Fragment {
         View inflate = inflater.inflate(R.layout.fragment_simple_bar, container, false);
         FloatingActionButton fab = (FloatingActionButton) inflate.findViewById(R.id.fab);
         final QsFabFactory qsFabFactory = QsFabFactory.loadControl(fab, new QsBarController(), Color.WHITE);
-        qsFabFactory.start(-1);
+        qsFabFactory.start(number);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                qsFabFactory.start(-1);
+                qsFabFactory.start(number);
             }
         });
         inflate.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {

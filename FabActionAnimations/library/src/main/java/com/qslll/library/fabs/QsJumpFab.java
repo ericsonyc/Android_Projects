@@ -85,7 +85,7 @@ public class QsJumpFab extends QsBaseFab {
      * 跳跃高度取决于控件的高度
      */
     private void initAnimator() {
-        int jumpH = getMeasuredHeight() - mFab.getMeasuredHeight();
+        int jumpH = getMeasuredHeight()/2 - mFab.getMeasuredHeight();
         translationY_down = ObjectAnimator.ofFloat(mJumpImageView, "translationY", -jumpH, 0);
         translationY_down.setInterpolator(new BounceInterpolator());
         translationY_up = ObjectAnimator.ofFloat(mJumpImageView, "translationY", 0, -jumpH);
@@ -99,14 +99,20 @@ public class QsJumpFab extends QsBaseFab {
 
     @Override
     public void setOnClickListener(final OnClickListener l) {
-        for (int i = 0; i < getChildCount(); i++) {
-            getChildAt(i).setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    l.onClick(v);
-                }
-            });
-        }
+//        for (int i = 0; i < getChildCount(); i++) {
+//            getChildAt(i).setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    l.onClick(v);
+//                }
+//            });
+//        }
+        getChildAt(0).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                l.onClick(v);
+            }
+        });
     }
 
     @Override

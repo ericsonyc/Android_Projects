@@ -28,7 +28,7 @@ public class QsShakeFab extends QsBaseFab {
     private ImageView mBackRipple;
 
     private int backRippleColor = Color.parseColor("#01579B");
-    private int centerRippleColor = Color.WHITE;
+    private int centerRippleColor = Color.BLACK;
 
     private AnimatorSet mAnimatorset = new AnimatorSet();
 
@@ -79,7 +79,7 @@ public class QsShakeFab extends QsBaseFab {
         //inAnimations
         ObjectAnimator fabInAnimator;
         ObjectAnimator shakeInAnimator;
-        int scope = (mFab.getMeasuredWidth() - mShakeImage.getMeasuredWidth()) / 2 / 3;//shake scope
+        int scope = (mFab.getMeasuredWidth() - mShakeImage.getMeasuredWidth()) / 2 / 2;//shake scope
         ObjectAnimator shakeXAnimator = ObjectAnimator.ofFloat(mShakeImage, View.TRANSLATION_X, 0, -scope, scope, -scope, scope, -scope, scope, -scope, scope, -scope, scope, -scope, scope, -scope, scope, 0);
         PropertyValuesHolder scale12X = PropertyValuesHolder.ofFloat(View.SCALE_X, 1, 1.2f);
         PropertyValuesHolder scale12Y = PropertyValuesHolder.ofFloat(View.SCALE_Y, 1, 1.2f);

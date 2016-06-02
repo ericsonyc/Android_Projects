@@ -18,7 +18,7 @@ import android.view.ViewGroup;
  */
 public abstract class QsBaseFab extends ViewGroup {
 
-    private AnimatorSet mAnimatorSet;
+    private AnimatorSet mAnimatorSet = null;
 
     protected int maxImageSize = 24;//dp
     private long duration = 1000;
@@ -38,6 +38,7 @@ public abstract class QsBaseFab extends ViewGroup {
         super(context, attrs, defStyleAttr);
         initBase(context);
     }
+
     private void initBase(Context context) {
         if (maxImageSize == 24)
             maxImageSize = Util.dp2px(context, maxImageSize);
@@ -55,9 +56,9 @@ public abstract class QsBaseFab extends ViewGroup {
             currentCount = 999999;
         else
             currentCount = count;
-//        if (mAnimatorSet == null) {
+        if (mAnimatorSet == null) {
             mAnimatorSet = getAnimatorSet();
-//        }
+        }
         if (duration >= 0)
             mAnimatorSet.setDuration(duration);
         mAnimatorSet.addListener(new AnimatorListenerAdapter() {
@@ -115,7 +116,7 @@ public abstract class QsBaseFab extends ViewGroup {
         //// TODO: 16/5/25 need minimum method
         for (int i = 0; i < getChildCount(); i++) {
             View childAt = getChildAt(i);
-            childAt.measure(MeasureSpec.UNSPECIFIED,MeasureSpec.UNSPECIFIED);
+            childAt.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 //        super.onMeasure();

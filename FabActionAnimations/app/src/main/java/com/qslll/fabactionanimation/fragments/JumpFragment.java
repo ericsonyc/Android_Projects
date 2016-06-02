@@ -18,6 +18,7 @@ public class JumpFragment extends Fragment {
 
 
     private QsJumpFab qsJumpFab;
+    private int number = 5;
 
     public JumpFragment() {
         // Required empty public constructor
@@ -36,17 +37,16 @@ public class JumpFragment extends Fragment {
         qsJumpFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                qsJumpFab.start(-1);
+                qsJumpFab.start(number);
             }
         });
         //需要等到 view加载完成时才能加载启动动画
         qsJumpFab.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                qsJumpFab.start(-1);
+                qsJumpFab.start(number);
             }
         });
-
 
 
         inflate.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {

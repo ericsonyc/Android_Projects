@@ -5,7 +5,13 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Bitmap;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 /**
  * Created by Qs on 16/5/26.
@@ -27,8 +33,24 @@ public class QsFabFactory {
         this.control = control;
         this.color = color;
         floatingActionButton.measure(0, 0);
+        System.out.println("-----------------" + floatingActionButton.getMeasuredWidth() + "---" + floatingActionButton.getMeasuredHeight());
         control.init(floatingActionButton.getMeasuredHeight(), floatingActionButton.getMeasuredWidth());
-        setupFab(control.drawDefault(color));
+        Bitmap bitmap = control.drawDefault(color);
+//        File file = new File("D:\\image.png");
+//        try {
+//            file.createNewFile();
+//            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos);
+//            byte[] bitmapdata = bos.toByteArray();
+//            FileOutputStream fos=new FileOutputStream(file);
+//            fos.write(bitmapdata);
+//            fos.flush();
+//            fos.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        setupFab(bitmap);
         valueAnimator = ObjectAnimator.ofFloat(0, 1);
         valueAnimator.setDuration(control.getDurtion());
 
