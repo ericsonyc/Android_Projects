@@ -1,0 +1,5 @@
+See file:///C:/Users/ericson/Desktop/android-ndk-master/hello-jni/app/build/tmp/compileHello-jniMipsDebugAllSharedLibraryHello-jniMainC/output.txt for all output for compileHello-jniMipsDebugAllSharedLibraryHello-jniMainC.
+compiling hello-jni.c successful.
+clang.exe: warning: optimization flag '-finline-functions' is not supported
+
+Finished compileHello-jniMipsDebugAllSharedLibraryHello-jniMainC, see full log file:///C:/Users/ericson/Desktop/android-ndk-master/hello-jni/app/build/tmp/compileHello-jniMipsDebugAllSharedLibraryHello-jniMainC/output.txt.

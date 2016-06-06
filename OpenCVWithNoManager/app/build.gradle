@@ -1,0 +1,71 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+    defaultConfig {
+        applicationId "com.example.ericson.opencvwithnomanager"
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk{
+            ndk{
+                moduleName "FaceJniLibName"			//生成的so名字
+                abiFilters "armeabi", "armeabi-v7a", "x86"	//输出指定三种abi体系结构下的so库。目前可有可无。
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+        }
+    }
+
+    sourceSets.main{
+        jniLibs.srcDir 'src/main/libs'
+        jni.srcDirs = []
+    }
+
+//    productFlavors {
+//        // for detailed abiFilter descriptions, refer to "Supported ABIs" @
+//        // https://developer.android.com/ndk/guides/abis.html#sa
+//        create("arm") {
+//            ndk.abiFilters.add("armeabi")
+//        }
+//        create("arm7") {
+//            ndk.abiFilters.add("armeabi-v7a")
+//        }
+//        create("arm8") {
+//            ndk.abiFilters.add("arm64-v8a")
+//        }
+//        create("x86") {
+//            ndk.abiFilters.add("x86")
+//        }
+//        create("x86-64") {
+//            ndk.abiFilters.add("x86_64")
+//        }
+//        create("mips") {
+//            ndk.abiFilters.add("mips")
+//        }
+//        create("mips-64") {
+//            ndk.abiFilters.add("mips64")
+//        }
+//        // To include all cpu architectures, leaves abiFilters empty
+//        create("all")
+//    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha1'
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support:support-annotations:23.4.0'
+    compile project(':libraries:opencv')
+}

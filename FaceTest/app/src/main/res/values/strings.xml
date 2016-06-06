@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">FaceTest</string>
+    <string name="sign_">人脸签到</string>
+    <string name="sign">签到</string>
+    <string name="again">重新签到</string>
+    <string name="hand">手动签到</string>
+    <string name="upload">上传近照</string>
+    <string name="login">登录</string>
+    <string name="sign_fail">没有您的信息!</string>
+    <string name="sign_succ">签到成功!</string>
+    <string name="ok">确认</string>
+    <string name="up_again">重拍</string>
+    <string name="msg">如果您的人脸信息没有登记，请使用手动签到!</string>
+    <string name="next">下一个</string>
+</resources>

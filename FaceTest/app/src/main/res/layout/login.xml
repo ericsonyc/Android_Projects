@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@mipmap/bgg"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/logo" />
+
+    <EditText
+        android:id="@+id/user"
+        android:layout_width="420dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="40dp"
+        android:background="@mipmap/user"
+        android:imeActionLabel="@string/next"
+        android:imeOptions="actionGo"
+        android:maxLength="16"
+        android:maxLines="1"
+        android:paddingLeft="110dp"
+        android:singleLine="true"
+        android:textSize="24dp" />
+
+    <EditText
+        android:id="@+id/pwd"
+        android:layout_width="420dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="15dp"
+        android:background="@mipmap/password"
+        android:maxLength="16"
+        android:paddingLeft="110dp"
+        android:password="true"
+        android:singleLine="true"
+        android:textSize="24dp" />
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@mipmap/btn"
+        android:text="@string/login"
+        android:textColor="#ffffff"
+        android:textSize="28dp" />
+
+</LinearLayout>

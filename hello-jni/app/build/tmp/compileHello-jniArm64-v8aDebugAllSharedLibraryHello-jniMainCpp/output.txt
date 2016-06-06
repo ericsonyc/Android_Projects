@@ -1,0 +1,15 @@
+See file:///C:/Users/ericson/Desktop/android-ndk-master/hello-jni/app/build/tmp/compileHello-jniArm64-v8aDebugAllSharedLibraryHello-jniMainCpp/output.txt for all output for compileHello-jniArm64-v8aDebugAllSharedLibraryHello-jniMainCpp.
+compiling hello-jni.cpp failed.
+C:\Users\ericson\Desktop\android-ndk-master\hello-jni\app\src\main\jni\hello-jni.cpp:62:18: error: member reference type 'JNIEnv' (aka '_JNIEnv') is not a pointer; did you mean to use '.'?
+    return (*env)->NewStringUTF(env, "Hello from JNI !  Compiled with ABI " );
+           ~~~~~~^~
+                 .
+C:\Users\ericson\Desktop\android-ndk-master\hello-jni\app\src\main\jni\hello-jni.cpp:62:38: error: too many arguments to function call, expected single argument 'bytes', have 2 arguments
+    return (*env)->NewStringUTF(env, "Hello from JNI !  Compiled with ABI " );
+           ~~~~~~~~~~~~~~~~~~~~      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\android\sdk\ndk-bundle/platforms/android-23/arch-arm64/usr/include\jni.h:872:5: note: 'NewStringUTF' declared here
+    jstring NewStringUTF(const char* bytes)
+    ^
+2 errors generated.
+
+Finished compileHello-jniArm64-v8aDebugAllSharedLibraryHello-jniMainCpp, see full log file:///C:/Users/ericson/Desktop/android-ndk-master/hello-jni/app/build/tmp/compileHello-jniArm64-v8aDebugAllSharedLibraryHello-jniMainCpp/output.txt.

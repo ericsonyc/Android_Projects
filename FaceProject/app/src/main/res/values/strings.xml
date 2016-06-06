@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">FaceProject</string>
+    <string name="action_setting">Settings</string>
+    <string name="title_activity_main">face detect</string>
+</resources>

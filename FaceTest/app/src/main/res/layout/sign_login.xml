@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@mipmap/bgg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:background="@mipmap/top"
+        android:gravity="right" >
+
+        <ImageView
+            android:id="@+id/sign_break"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="20dp"
+            android:onClick="openActivity"
+            android:src="@mipmap/tuichu" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="30dp"
+        android:background="@mipmap/bg"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/sign_user"
+            android:layout_width="420dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="40dp"
+            android:background="@mipmap/red_user"
+            android:maxLength="16"
+            android:maxLines="1"
+            android:paddingLeft="110dp"
+            android:singleLine="true"
+            android:textSize="24dp" />
+
+        <EditText
+            android:id="@+id/sign_pwd"
+            android:layout_width="420dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="15dp"
+            android:background="@mipmap/red_password"
+            android:maxLength="16"
+            android:paddingLeft="110dp"
+            android:password="true"
+            android:singleLine="true"
+            android:textSize="24dp" />
+
+        <Button
+            android:id="@+id/sign_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@mipmap/red_btn"
+            android:onClick="openActivity"
+            android:text="@string/sign"
+            android:textColor="#ffffff"
+            android:textSize="28dp" />
+    </LinearLayout>
+
+</LinearLayout>
