@@ -1,5 +1,6 @@
 package com.face.android.faceproject;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -53,17 +54,19 @@ import android.widget.Toast;
 public class DetectActivity extends Activity {
 
     private final static String TAG = "DetectActivity";
-    private final static int CHOOSE_FROM_PHONE = 1;
-    private final static int CHOOSE_FROM_CAMERA = 2;
+
 
     private TextView faceNumberTextView;
     private Button detectButton;
+    private Button saveButton;
     private ImageView imageView;
 
     private Bitmap detecedImage;
+    private Bitmap writeImage;
     ProgressDialog progressDialog;
+    private static boolean saveFlag = false;
 
-    private String xmlPath = "sdcard/faceProject/haarcascade_frontalface_alt2.xml";
+    private String xmlPath = "/sdcard/faceProject/haarcascade_frontalface_alt2.xml";
     private File xmlFile;
     private CascadeClassifier cascadeClassifier;
 
@@ -88,14 +91,14 @@ public class DetectActivity extends Activity {
                         if (which == 0)//from phone
                         {
                             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                            photoPickerIntent.setType("image/*");
-                            startActivityForResult(photoPickerIntent, CHOOSE_FROM_PHONE);
+                            photoPickerIntent.setType("image/*");
+                            startActivityForResult(photoPickerIntent, StringUtils.CHOOSE_FROM_PHONE);
                         } else//take a photo from camera now
                         {
                             Intent CameraPickerintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             CameraPickerintent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment
                                     .getExternalStorageDirectory(), "temp.jpg")));
-                            startActivityForResult(CameraPickerintent, CHOOSE_FROM_CAMERA);
+                            startActivityForResult(CameraPickerintent, StringUtils.CHOOSE_FROM_CAMERA);
 
                         }
                         dialog.dismiss();
@@ -106,8 +109,47 @@ public class DetectActivity extends Activity {
 
             }
         });
+        saveButton = (Button) findViewById(R.id.saveBtn);
+        saveButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!saveFlag) {
+                    File data = new File(StringUtils.recognizePath);
+                    int count = 0;
+                    if (!data.exists())
+                        data.mkdirs();
+                    else {
+                        count = new File(StringUtils.recognizePath).listFiles().length;
+//                        File[] files = new File(StringUtils.recognizePath).listFiles();
+//                        int number = files.length;
+//                        for (int i = number - 1; i >= 0; i--) {
+//                            files[i].delete();
+//                        }
+                    }
+                    writeBmp(writeImage, detecedImage.getWidth(), detecedImage.getHeight(), StringUtils.recognizePath + "/" + (count + 1) + ".jpg");
+                    System.out.println("-------------width:" + detecedImage.getWidth() + "   height:" + detecedImage.getHeight());
+                    Toast.makeText(DetectActivity.this, "Saved successed", Toast.LENGTH_SHORT).show();
+                    saveFlag = true;
+                } else {
+                    Toast.makeText(DetectActivity.this, "Saved before", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
+    }
 
+    public void writeBmp(Bitmap bmp, int width, int height, String path) {
+        File file = new File(path);
+        try {
+            Bitmap bm = Bitmap.createBitmap(bmp, 0, 0, width, height);
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+            if (bm.compress(Bitmap.CompressFormat.JPEG, 100, bos)) {
+                bos.flush();
+                bos.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -127,7 +169,7 @@ public class DetectActivity extends Activity {
         if (resultCode == RESULT_OK) {
 
             String filePath = "";
-            if (requestCode == CHOOSE_FROM_PHONE) {
+            if (requestCode == StringUtils.CHOOSE_FROM_PHONE) {
                 if (data != null) {
                     Uri selectedImage = data.getData();
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -143,7 +185,7 @@ public class DetectActivity extends Activity {
                 } else {
                     Toast.makeText(DetectActivity.this, "choose picture cancel", Toast.LENGTH_SHORT).show();
                 }
-            } else if (requestCode == CHOOSE_FROM_CAMERA) {
+            } else if (requestCode == StringUtils.CHOOSE_FROM_CAMERA) {
                 String status = Environment.getExternalStorageState();
                 Log.d(TAG, "CHOOSE_FROM_CAMERA" + status);
                 if (status.equals(Environment.MEDIA_MOUNTED)) {
@@ -164,6 +206,8 @@ public class DetectActivity extends Activity {
             options.inJustDecodeBounds = false;
             detecedImage = BitmapFactory.decodeFile(filePath, options);
             imageView.setImageBitmap(detecedImage);
+            writeImage = Bitmap.createBitmap(detecedImage, 0, 0, detecedImage.getWidth(), detecedImage.getHeight());
+            saveFlag = false;
             //begin  detect
             progressDialog = ProgressDialog.show(DetectActivity.this, "face detecing...", "Please wait...", true, false);
             DetectThread detectThread = new DetectThread();
@@ -251,7 +295,7 @@ public class DetectActivity extends Activity {
         }
     };
 
-    public void load_cascade(){
+    public void load_cascade() {
         try {
             InputStream is = getResources().openRawResource(R.raw.haarcascade_frontalface_alt2);
             File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);

@@ -140,8 +140,7 @@ public class Login extends Activity {
         if (!Detect.exists()) {
             Detect.mkdirs();
         }
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(),
-                R.mipmap.one);
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.one);
         cu.writePhoto(bmp, 100, 100, "/sdcard/FaceData/0_识别失败.jpg");
         cu.writePhoto(bmp, 100, 100, "/sdcard/FaceData/-1_识别失败.jpg");
         writeXML();
@@ -184,8 +183,8 @@ public class Login extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
     }

@@ -107,10 +107,10 @@ public class Sign extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_5, this,
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this,
                 mLoaderCallback);
     }
 

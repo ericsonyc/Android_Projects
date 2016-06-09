@@ -22,5 +22,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,DetectActivity.class));
             }
         });
+        recognition = (Button)findViewById(R.id.recongitionButton);
+        recognition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,RecognitionActivity.class));
+            }
+        });
     }
 }
