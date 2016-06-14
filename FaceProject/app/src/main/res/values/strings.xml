@@ -2,4 +2,15 @@
     <string name="app_name">FaceProject</string>
     <string name="action_setting">Settings</string>
     <string name="title_activity_main">face detect</string>
+
+    <!-- Emotion subscription key -->
+    <!-- Please refer to https://www.projectoxford.ai/ to get your subscription key -->
+    <!-- If you have one subscription key, you can add it here to use the service -->
+    <string name="subscription_key">c6baefce57c2435d913c3e2c77c78a39</string>
+
+    <!-- Face subscription key -->
+    <!-- Please refer to http://oxford-portal.azurewebsites.net/doc/general/subscription-key-mgmt to get your subscription key -->
+    <!-- Please note that the Emotion API and Face API have different subscription keys -->
+    <!-- You will need Face subscription key, besides the Emotion subscription keys, for the second part of the sample to work -->
+    <string name="faceSubscription_key">b799fa3f0384423289179a58ee603984</string>
 </resources>
