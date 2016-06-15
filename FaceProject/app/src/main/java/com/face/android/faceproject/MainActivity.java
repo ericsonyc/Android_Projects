@@ -69,9 +69,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.setScaleValue(0.6f);
 
         // create menu items;
-        itemDetect = new ResideMenuItem(this, R.mipmap.icon_home, "Detect");
-        itemRecognize = new ResideMenuItem(this, R.mipmap.icon_profile, "Recognize");
-        itemEmotion = new ResideMenuItem(this, R.mipmap.icon_settings, "Emotion");
+        itemDetect = new ResideMenuItem(this, R.mipmap.detect, "Detect");
+        itemRecognize = new ResideMenuItem(this, R.mipmap.recognize, "Recognize");
+        itemEmotion = new ResideMenuItem(this, R.mipmap.emotion, "Emotion");
 
         itemDetect.setOnClickListener(this);
         itemRecognize.setOnClickListener(this);
@@ -116,12 +116,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
         @Override
         public void openMenu() {
-            Toast.makeText(MainActivity.this, "Menu is opened!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MainActivity.this, "Menu is opened!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void closeMenu() {
-            Toast.makeText(MainActivity.this, "Menu is closed!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(MainActivity.this, "Menu is closed!", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -141,6 +141,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
 
     }
 }

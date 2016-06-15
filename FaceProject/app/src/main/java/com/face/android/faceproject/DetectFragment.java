@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,10 +32,16 @@ import com.special.ResideMenu.ResideMenu;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.bytedeco.javacpp.presets.opencv_core;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
@@ -66,11 +74,16 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
     private Bitmap detecedImage;
     private Bitmap writeImage;
     ProgressDialog progressDialog;
-    private static boolean saveFlag = false;
+    private static boolean saveFlag = true;
 
     private String xmlPath = "/sdcard/faceProject/haarcascade_frontalface_alt2.xml";
     private File xmlFile;
     private CascadeClassifier cascadeClassifier;
+    private List<String> names = new ArrayList<String>();
+    private List<Integer> counts = new ArrayList<Integer>();
+    //    private static int photoCount = 1;
+    private Map<String, Integer> maps = new HashMap<String, Integer>();
+    private static boolean firstStart = true;
 
     @Nullable
     @Override
@@ -103,13 +116,13 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
                     {
                         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         photoPickerIntent.setType("image/*");
-                        startActivityForResult(photoPickerIntent, StringUtils.CHOOSE_FROM_PHONE);
+                        startActivityForResult(photoPickerIntent, ImageUtils.CHOOSE_FROM_PHONE);
                     } else//take a photo from camera now
                     {
                         Intent CameraPickerintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         CameraPickerintent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment
                                 .getExternalStorageDirectory(), "temp.jpg")));
-                        startActivityForResult(CameraPickerintent, StringUtils.CHOOSE_FROM_CAMERA);
+                        startActivityForResult(CameraPickerintent, ImageUtils.CHOOSE_FROM_CAMERA);
 
                     }
                     dialog.dismiss();
@@ -119,29 +132,124 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
             builder.create().show();
         } else if (v == saveButton) {
             if (!saveFlag) {
-                File data = new File(StringUtils.recognizePath);
-                int count = 0;
+                File data = new File(ImageUtils.savePath);
+//                int count = 0;
                 if (!data.exists())
                     data.mkdirs();
                 else {
-                    count = new File(StringUtils.recognizePath).listFiles().length;
-//                        File[] files = new File(StringUtils.recognizePath).listFiles();
+//                    count = new File(ImageUtils.savePath).listFiles().length;
+//                        File[] files = new File(ImageUtils.recognizePath).listFiles();
 //                        int number = files.length;
 //                        for (int i = number - 1; i >= 0; i--) {
 //                            files[i].delete();
 //                        }
+                    if (firstStart) {
+                        ImageUtils.deleteFiles(data);
+                        data.mkdirs();
+                        firstStart = false;
+                    }
                 }
-                writeBmp(writeImage, detecedImage.getWidth(), detecedImage.getHeight(), StringUtils.recognizePath + "/" + (count + 1) + ".jpg");
-                System.out.println("-------------width:" + detecedImage.getWidth() + "   height:" + detecedImage.getHeight());
-                Toast.makeText(getActivity(), "Saved successed", Toast.LENGTH_SHORT).show();
-                saveFlag = true;
+                createAlertDialog();
+//                writeBmp(writeImage, detecedImage.getWidth(), detecedImage.getHeight(), ImageUtils.recognizePath + "/" + (count + 1) + ".jpg");
+//                System.out.println("-------------width:" + detecedImage.getWidth() + "   height:" + detecedImage.getHeight());
+
             } else {
                 Toast.makeText(getActivity(), "Saved before", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+    private void createAlertDialog() {
+        // get prompts.xml view
+        LayoutInflater li = LayoutInflater.from(getContext());
+        View promptsView = li.inflate(R.layout.alert, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final EditText userInput = (EditText) promptsView
+                .findViewById(R.id.editTextDialogUserInput);
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                if (maps.containsKey(userInput.getText().toString())) {
+                                    int cc = (maps.get(userInput.getText().toString()) + 1);
+//                                    writeBmp(writeImage, writeImage.getWidth(), writeImage.getHeight(), ImageUtils.savePath + "/" + userInput.getText() + "-" + cc + "m.jpg");
+                                    writeBmp(writeImage, ImageUtils.savePath, userInput.getText() + "-" + cc + "m.jpg");
+                                    maps.put(userInput.getText().toString(), cc);
+                                    System.out.println("*********width:" + writeImage.getWidth() + "height:" + writeImage.getHeight());
+                                } else {
+                                    maps.put(userInput.getText().toString(), 1);
+//                                    writeBmp(writeImage, writeImage.getWidth(), writeImage.getHeight(), ImageUtils.savePath + "/" + userInput.getText() + "-1m.jpg");
+                                    writeBmp(writeImage, ImageUtils.savePath, userInput.getText() + "-1m.jpg");
+                                    System.out.println("*********width:" + writeImage.getWidth() + "height:" + writeImage.getHeight());
+                                }
+
+                                Toast.makeText(getActivity(), "Saved successed", Toast.LENGTH_SHORT).show();
+                                saveFlag = true;
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+    public void writeBmp(Bitmap bmp, String path, String fileName) {
+//        MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bmp, title, description);
+        try {
+//            MediaStore.Images.Media.insertImage(getContext().getContentResolver(), path, path.substring(path.lastIndexOf("/") + 1), description);
+            saveImageToGallery(getContext(), bmp, path, fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveImageToGallery(Context context, Bitmap bmp, String path, String fileName) {
+        // 首先保存图片
+        File appDir = new File(path);
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 其次把文件插入到系统图库
+        try {
+            MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                    file.getAbsolutePath(), fileName, null);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // 最后通知图库更新
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
+    }
+
     public void writeBmp(Bitmap bmp, int width, int height, String path) {
+
         File file = new File(path);
         try {
             Bitmap bm = Bitmap.createBitmap(bmp, 0, 0, width, height);
@@ -167,7 +275,7 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
         if (resultCode == RESULT_OK) {
 
             String filePath = "";
-            if (requestCode == StringUtils.CHOOSE_FROM_PHONE) {
+            if (requestCode == ImageUtils.CHOOSE_FROM_PHONE) {
                 if (data != null) {
                     Uri selectedImage = data.getData();
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -183,7 +291,7 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
                 } else {
                     Toast.makeText(getActivity(), "choose picture cancel", Toast.LENGTH_SHORT).show();
                 }
-            } else if (requestCode == StringUtils.CHOOSE_FROM_CAMERA) {
+            } else if (requestCode == ImageUtils.CHOOSE_FROM_CAMERA) {
                 String status = Environment.getExternalStorageState();
                 Log.d(TAG, "CHOOSE_FROM_CAMERA" + status);
                 if (status.equals(Environment.MEDIA_MOUNTED)) {
@@ -197,14 +305,17 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
 //            imageView.setImageBitmap(detecedImage);
 
             //compress the bitmap
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            detecedImage = BitmapFactory.decodeFile(filePath, options);
-            options.inSampleSize = Math.max(1, (int) Math.ceil(Math.max((double) options.outWidth / 1024f, (double) options.outHeight / 1024f)));
-            options.inJustDecodeBounds = false;
-            detecedImage = BitmapFactory.decodeFile(filePath, options);
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//            options.inJustDecodeBounds = true;
+//            detecedImage = BitmapFactory.decodeFile(filePath, options);
+//            options.inSampleSize = Math.max(1, (int) Math.ceil(Math.max((double) options.outWidth / 1024f, (double) options.outHeight / 1024f)));
+//            options.inJustDecodeBounds = false;
+//            detecedImage = BitmapFactory.decodeFile(filePath, options);
+            detecedImage = ImageUtils.getImage(filePath);
+            writeImage = ImageUtils.getImage(filePath);
             imageView.setImageBitmap(detecedImage);
-            writeImage = Bitmap.createBitmap(detecedImage, 0, 0, detecedImage.getWidth(), detecedImage.getHeight());
+//            writeImage = Bitmap.createBitmap(detecedImage, 0, 0, detecedImage.getWidth(), detecedImage.getHeight());
+
             saveFlag = false;
             //begin  detect
             progressDialog = ProgressDialog.show(getContext(), "face detecing...", "Please wait...", true, false);

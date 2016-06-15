@@ -4,40 +4,54 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/linear">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Get a picture"
-            android:id="@+id/get_picture"
-            android:layout_weight="1"/>
+        android:orientation="horizontal">
 
         <Button
+            android:id="@+id/get_picture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:text="Get a picture" />
+
+        <Button
             android:id="@+id/get_libs"
-            android:text="GET ALL PICTURES"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="GET ALL PICTURES" />
 
     </LinearLayout>
 
-
-    <Button
+    <LinearLayout
+        android:id="@+id/linear_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Recognize"
-        android:id="@+id/recognizeBtn"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/recognizeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="Recognize" />
+
+        <TextView
+            android:id="@+id/facetextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center" />
+
+    </LinearLayout>
 
     <ImageView
+        android:id="@+id/imageRecognize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/get_picture"
-        android:layout_above="@id/recognizeBtn"
-        android:id="@+id/imageRecognize"
-        android:src="@mipmap/ic_launcher"/>
+        android:layout_above="@id/linear_bottom"
+        android:layout_below="@id/linear"
+        android:src="@mipmap/ic_launcher" />
 
 </RelativeLayout>
