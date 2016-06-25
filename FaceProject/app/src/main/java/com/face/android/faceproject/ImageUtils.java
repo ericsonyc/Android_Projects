@@ -97,7 +97,7 @@ public class ImageUtils {
         return compressImage(bitmap);//压缩好比例大小后再进行质量压缩
     }
 
-    public static void deleteFiles(File file) {
+    public static void deleteFiles(File file) {//迭代删除文件夹
         if (!file.exists()) {
             return;
         } else {
@@ -119,7 +119,7 @@ public class ImageUtils {
         }
     }
 
-    public static Bitmap resize(Bitmap yourBitmap) {
+    public static Bitmap resize(Bitmap yourBitmap) {//重新定义图片的长宽，用于人脸识别，因为人脸识别的测试图片和训练图片必须是同样的大小
         Bitmap resized = Bitmap.createScaledBitmap(yourBitmap, width, height, true);
         return resized;
     }

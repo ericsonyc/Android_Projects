@@ -63,7 +63,7 @@ public class EmotionFragment extends Fragment implements View.OnClickListener {
     private TextView textView;
     private String filePath;
     private Button doRecognizeBtn;
-    private EmotionServiceClient client;
+    private EmotionServiceClient client;//使用Emotion api
 
     @Nullable
     @Override
@@ -73,8 +73,8 @@ public class EmotionFragment extends Fragment implements View.OnClickListener {
         return parentView;
     }
 
-    private void setUpView() {
-        if (client == null) {
+    private void setUpView() {//初始化控件
+        if (client == null) {//该类用于检测Emotion，根据网上申请的key值来初始化
             client = new EmotionServiceRestClient(getString(R.string.subscription_key));
         }
 
@@ -91,6 +91,7 @@ public class EmotionFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == selectImage) {
+            //choose picture from where
             final String items[] = {"from phone", "from camera"};
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle("choose a picture");
@@ -118,7 +119,7 @@ public class EmotionFragment extends Fragment implements View.OnClickListener {
         } else if (v == doRecognizeBtn) {
             if (detectedImage != null) {
                 textView.setText("");
-                doRecognize();
+                doRecognize();//detect emotion funciton
             }
         }
     }
@@ -128,7 +129,7 @@ public class EmotionFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == ImageUtils.CHOOSE_FROM_PHONE) {
-                if (data != null) {
+                if (data != null) {//get picture from gallery
                     Uri selectedImage = data.getData();
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
                     Cursor cursor = getContext().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
@@ -140,8 +141,8 @@ public class EmotionFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getContext(), "choose picture cancel", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                compressBitmap();
-            } else if (requestCode == ImageUtils.CHOOSE_FROM_CAMERA) {
+                compressBitmap();//compress picture
+            } else if (requestCode == ImageUtils.CHOOSE_FROM_CAMERA) {//get picture from camera
                 String status = Environment.getExternalStorageState();
                 if (status.equals(Environment.MEDIA_MOUNTED)) {
                     filePath = Environment.getExternalStorageDirectory() + "/temp.jpg";
@@ -155,9 +156,9 @@ public class EmotionFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void compressBitmap() {
+    public void compressBitmap() {// compress bitmap
         if (detectedImage != null)
-            detectedImage.recycle();
+            detectedImage.recycle();//release bitmap object
         //compress the bitmap
 //        BitmapFactory.Options options = new BitmapFactory.Options();
 //        options.inJustDecodeBounds = true;
@@ -246,7 +247,7 @@ public class EmotionFragment extends Fragment implements View.OnClickListener {
                     paint.setStrokeWidth(5);
                     paint.setColor(Color.RED);
 
-                    for (RecognizeResult r : result) {
+                    for (RecognizeResult r : result) {//show the detect message
                         textView.append(String.format("\nFace #%1$d \n", count));
                         textView.append(String.format("\t anger: %1$.5f\n", r.scores.anger));
                         textView.append(String.format("\t contempt: %1$.5f\n", r.scores.contempt));
@@ -261,7 +262,7 @@ public class EmotionFragment extends Fragment implements View.OnClickListener {
                                 r.faceRectangle.top,
                                 r.faceRectangle.left + r.faceRectangle.width,
                                 r.faceRectangle.top + r.faceRectangle.height,
-                                paint);
+                                paint);//paint rectangle of face
                         count++;
                     }
 //                    ImageView imageView = (ImageView) findViewById(R.id.selectedImage);

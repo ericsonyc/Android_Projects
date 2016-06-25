@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button detection;
     Button recognition;
     Button emotionBtn;
+
+    //resideMenu used to get the menu
     private ResideMenu resideMenu;
     private ResideMenuItem itemDetect;
     private ResideMenuItem itemRecognize;
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.setBackground(R.mipmap.menu_background);
         resideMenu.attachToActivity(this);
         resideMenu.setMenuListener(menuListener);
-        //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip.
+        //valid scale factor is between 0.0f and 1.0f.
         resideMenu.setScaleValue(0.6f);
 
         // create menu items;
@@ -73,14 +75,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         itemRecognize = new ResideMenuItem(this, R.mipmap.recognize, "Recognize");
         itemEmotion = new ResideMenuItem(this, R.mipmap.emotion, "Emotion");
 
+        //get the click listener
         itemDetect.setOnClickListener(this);
         itemRecognize.setOnClickListener(this);
         itemEmotion.setOnClickListener(this);
 
+        //menu add items
         resideMenu.addMenuItem(itemDetect, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemRecognize, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemEmotion, ResideMenu.DIRECTION_LEFT);
 
+        //left button click, open the menu on the left
         findViewById(R.id.title_bar_left_menu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,11 +102,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        //dispatch the event to the resideMenu
         return resideMenu.dispatchKeyEvent(event);
     }
 
     @Override
     public void onClick(View view) {
+        //depend on the click item to choose the fragment
         if (view == itemDetect){
             changeFragment(new DetectFragment());
         }else if (view == itemRecognize){
@@ -113,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.closeMenu();
     }
 
+    //the resideMenu's MenuListener, can add your own codes
     private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
         @Override
         public void openMenu() {
@@ -125,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    //change the Fragment
     private void changeFragment(Fragment targetFragment) {
         resideMenu.clearIgnoredViewList();
         getSupportFragmentManager()

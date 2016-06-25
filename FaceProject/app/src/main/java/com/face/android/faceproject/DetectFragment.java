@@ -74,16 +74,16 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
     private Bitmap detecedImage;
     private Bitmap writeImage;
     ProgressDialog progressDialog;
-    private static boolean saveFlag = true;
+    private static boolean saveFlag = true; //用来表示是不是已经保存Detect的图片到SaveImage文件夹下
 
     private String xmlPath = "/sdcard/faceProject/haarcascade_frontalface_alt2.xml";
     private File xmlFile;
     private CascadeClassifier cascadeClassifier;
-    private List<String> names = new ArrayList<String>();
-    private List<Integer> counts = new ArrayList<Integer>();
+    private List<String> names = new ArrayList<String>(); //用来保存图片姓名，用来人脸识别，名字在“-”前面
+    private List<Integer> counts = new ArrayList<Integer>();//用来保存同样的姓名的图片一共有几张测试图片
     //    private static int photoCount = 1;
-    private Map<String, Integer> maps = new HashMap<String, Integer>();
-    private static boolean firstStart = true;
+    private Map<String, Integer> maps = new HashMap<String, Integer>();//用来保存图片名称对应的个数，一次写入Recognize文件夹用于人脸识别
+    private static boolean firstStart = true;//第一次启动程序用来删除SavePath文件夹
 
     @Nullable
     @Override
@@ -93,7 +93,7 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
         return parentView;
     }
 
-    private void setUpViews() {
+    private void setUpViews() {//获取控件，并设置点击事件
         faceNumberTextView = (TextView) parentView.findViewById(R.id.faceNumber);
         imageView = (ImageView) parentView.findViewById(R.id.imageView1);
         detectButton = (Button) parentView.findViewById(R.id.detectButton);
@@ -131,27 +131,18 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
             });
             builder.create().show();
         } else if (v == saveButton) {
-            if (!saveFlag) {
+            if (!saveFlag) {//save the picture you take
                 File data = new File(ImageUtils.savePath);
-//                int count = 0;
                 if (!data.exists())
                     data.mkdirs();
                 else {
-//                    count = new File(ImageUtils.savePath).listFiles().length;
-//                        File[] files = new File(ImageUtils.recognizePath).listFiles();
-//                        int number = files.length;
-//                        for (int i = number - 1; i >= 0; i--) {
-//                            files[i].delete();
-//                        }
                     if (firstStart) {
                         ImageUtils.deleteFiles(data);
                         data.mkdirs();
                         firstStart = false;
                     }
                 }
-                createAlertDialog();
-//                writeBmp(writeImage, detecedImage.getWidth(), detecedImage.getHeight(), ImageUtils.recognizePath + "/" + (count + 1) + ".jpg");
-//                System.out.println("-------------width:" + detecedImage.getWidth() + "   height:" + detecedImage.getHeight());
+                createAlertDialog();//alert dialog to save the name
 
             } else {
                 Toast.makeText(getActivity(), "Saved before", Toast.LENGTH_SHORT).show();
@@ -179,14 +170,14 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 if (maps.containsKey(userInput.getText().toString())) {
-                                    int cc = (maps.get(userInput.getText().toString()) + 1);
-//                                    writeBmp(writeImage, writeImage.getWidth(), writeImage.getHeight(), ImageUtils.savePath + "/" + userInput.getText() + "-" + cc + "m.jpg");
+                                    int cc = (maps.get(userInput.getText().toString()) + 1);//the count of the same name images
+                                    //write the Bitmap to SaveImage folder
                                     writeBmp(writeImage, ImageUtils.savePath, userInput.getText() + "-" + cc + "m.jpg");
                                     maps.put(userInput.getText().toString(), cc);
                                     System.out.println("*********width:" + writeImage.getWidth() + "height:" + writeImage.getHeight());
                                 } else {
                                     maps.put(userInput.getText().toString(), 1);
-//                                    writeBmp(writeImage, writeImage.getWidth(), writeImage.getHeight(), ImageUtils.savePath + "/" + userInput.getText() + "-1m.jpg");
+                                    //第一次写入文件夹，文件名是**-1m.jpg
                                     writeBmp(writeImage, ImageUtils.savePath, userInput.getText() + "-1m.jpg");
                                     System.out.println("*********width:" + writeImage.getWidth() + "height:" + writeImage.getHeight());
                                 }
@@ -210,9 +201,8 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
     }
 
     public void writeBmp(Bitmap bmp, String path, String fileName) {
-//        MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bmp, title, description);
         try {
-//            MediaStore.Images.Media.insertImage(getContext().getContentResolver(), path, path.substring(path.lastIndexOf("/") + 1), description);
+            //save images
             saveImageToGallery(getContext(), bmp, path, fileName);
         } catch (Exception e) {
             e.printStackTrace();
@@ -244,11 +234,11 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        // 最后通知图库更新
+        // 最后通知图库更新，用于用户可以从图库中选择用来识别的训练图片，否则图库中不显示保存的图片
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + path)));
     }
 
-    public void writeBmp(Bitmap bmp, int width, int height, String path) {
+    public void writeBmp(Bitmap bmp, int width, int height, String path) {//保存图片到文件夹
 
         File file = new File(path);
         try {
@@ -266,6 +256,7 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+        //加载OpenCV
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, getContext(), mLoaderCallback);
     }
 
@@ -275,14 +266,14 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
         if (resultCode == RESULT_OK) {
 
             String filePath = "";
-            if (requestCode == ImageUtils.CHOOSE_FROM_PHONE) {
+            if (requestCode == ImageUtils.CHOOSE_FROM_PHONE) {//从图库中获取图片
                 if (data != null) {
                     Uri selectedImage = data.getData();
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
                     Cursor cursor = getContext().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    filePath = cursor.getString(columnIndex);
+                    filePath = cursor.getString(columnIndex);//获得文件路径
                     cursor.close();
 //                    Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
 //                    cursor.moveToFirst();
@@ -291,11 +282,11 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
                 } else {
                     Toast.makeText(getActivity(), "choose picture cancel", Toast.LENGTH_SHORT).show();
                 }
-            } else if (requestCode == ImageUtils.CHOOSE_FROM_CAMERA) {
+            } else if (requestCode == ImageUtils.CHOOSE_FROM_CAMERA) {//从摄像头中获取图片
                 String status = Environment.getExternalStorageState();
                 Log.d(TAG, "CHOOSE_FROM_CAMERA" + status);
                 if (status.equals(Environment.MEDIA_MOUNTED)) {
-                    filePath = Environment.getExternalStorageDirectory() + "/temp.jpg";
+                    filePath = Environment.getExternalStorageDirectory() + "/temp.jpg";//获取图片路径
                 } else {
                     Toast.makeText(getActivity(), "no sdcard", Toast.LENGTH_SHORT).show();
                 }
@@ -311,12 +302,12 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
 //            options.inSampleSize = Math.max(1, (int) Math.ceil(Math.max((double) options.outWidth / 1024f, (double) options.outHeight / 1024f)));
 //            options.inJustDecodeBounds = false;
 //            detecedImage = BitmapFactory.decodeFile(filePath, options);
-            detecedImage = ImageUtils.getImage(filePath);
-            writeImage = ImageUtils.getImage(filePath);
+            detecedImage = ImageUtils.getImage(filePath);//压缩图片，用于显示在ImageView中
+            writeImage = ImageUtils.getImage(filePath);//压缩图片，用于保存在SaveImage中
             imageView.setImageBitmap(detecedImage);
 //            writeImage = Bitmap.createBitmap(detecedImage, 0, 0, detecedImage.getWidth(), detecedImage.getHeight());
 
-            saveFlag = false;
+            saveFlag = false;//防止重复保存
             //begin  detect
             progressDialog = ProgressDialog.show(getContext(), "face detecing...", "Please wait...", true, false);
             DetectThread detectThread = new DetectThread();
@@ -328,7 +319,7 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
     Handler updateUiHandler = new Handler() {
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Message msg) {//处理ProcessDialog
 
             progressDialog.dismiss();
             int faceNumber = msg.arg1;
@@ -368,7 +359,6 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
                 // Draw a bounding box around each face.
                 for (Rect rect : faceDetections.toArray()) {
                     Imgproc.rectangle(testMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 255, 0));
-//                    Core.rectangle(testMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(255, 0, 0));
                     ++facenum;
                 }
 
@@ -388,23 +378,24 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private BaseLoaderCallback loaderCallback = new BaseLoaderCallback(getContext()) {
-        public void onManagerConnected(int status) {
+//    //OpenCV回调函数
+//    private BaseLoaderCallback loaderCallback = new BaseLoaderCallback(getContext()) {
+//        public void onManagerConnected(int status) {
+//
+//            switch (status) {
+//                case LoaderCallbackInterface.SUCCESS: {
+//                    Log.i("face", "hello");
+//                }
+//                break;
+//                default: {
+//                    super.onManagerConnected(status);
+//                }
+//                break;
+//            }
+//        }
+//    };
 
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS: {
-                    Log.i("face", "hello");
-                }
-                break;
-                default: {
-                    super.onManagerConnected(status);
-                }
-                break;
-            }
-        }
-    };
-
-    public void load_cascade() {
+    public void load_cascade() {//加载cascade文件，初始化cascadeClassifier
         try {
             InputStream is = getResources().openRawResource(R.raw.haarcascade_frontalface_alt2);
             File cascadeDir = getContext().getDir("cascade", Context.MODE_PRIVATE);
@@ -436,6 +427,7 @@ public class DetectFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    //OpenCV回调函数
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(getContext()) {
 
         @Override
