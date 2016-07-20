@@ -20,7 +20,7 @@ task clean(type: Delete) {
 }
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 23
     buildToolsVersion '23.0.3'
 }
 dependencies {

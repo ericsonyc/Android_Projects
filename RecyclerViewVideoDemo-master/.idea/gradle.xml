@@ -5,7 +5,7 @@
       <GradleProjectSettings>
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="$APPLICATION_HOME_DIR$/gradle/gradle-2.10" />
+        <option name="gradleHome" value="/usr/local/Cellar/gradle/2.14/libexec" />
       </GradleProjectSettings>
     </option>
   </component>
